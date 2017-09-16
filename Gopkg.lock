@@ -5,7 +5,7 @@
   branch = "master"
   name = "github.com/karalabe/hid"
   packages = ["."]
-  revision = "f00545f9f3748e591590be3732d913c77525b10f"
+  revision = "2270b10f5857b3feaa663e7c869a3b0c45cd6a39"
   source = "https://github.com/DDRBoxman/hid.git"
 
 [solve-meta]
