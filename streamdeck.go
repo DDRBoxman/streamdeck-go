@@ -49,6 +49,18 @@ func (deck *StreamDeck) Close() {
 	deck.Device.Close()
 }
 
+func (deck *StreamDeck) Reset() error {
+	_, err := deck.Device.SendFeatureReport(reset)
+	return err
+}
+
+func (deck *StreamDeck) SetBrightness(brightness int) error {
+	brightnessBytes[5] = byte(brightness)
+
+	_, err := deck.Device.SendFeatureReport(brightnessBytes)
+	return err
+}
+
 func (deck *StreamDeck) WriteImageToKey(image *image.RGBA, key int) {
 	pixels := make([]byte, ICON_SIZE*ICON_SIZE*3)
 
