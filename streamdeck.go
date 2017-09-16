@@ -39,17 +39,17 @@ func FindDecks() []StreamDeck {
 	return decks
 }
 
-func (deck StreamDeck) Open() error {
+func (deck *StreamDeck) Open() error {
 	var err error
 	deck.Device, err = deck.DeviceInfo.Open()
 	return err
 }
 
-func (deck StreamDeck) Close() {
+func (deck *StreamDeck) Close() {
 	deck.Device.Close()
 }
 
-func (deck StreamDeck) WriteImageToKey(image *image.RGBA, key int) {
+func (deck *StreamDeck) WriteImageToKey(image *image.RGBA, key int) {
 	pixels := make([]byte, ICON_SIZE*ICON_SIZE*3)
 
 	for r := 0; r < ICON_SIZE; r++ {
