@@ -81,7 +81,7 @@ func (deck *StreamDeck) WriteImageToKey(image *image.RGBA, key int) {
 	writePage2(deck.Device, key, pixels[NUM_FIRST_PAGE_PIXELS*3:])
 }
 
-func writePage1(sd *hid.Device, key int, pixels []byte) {
+func writePage1(sd *hid.Device, key int, pixels []byte) error {
 	header := []byte{
 		0x02, 0x01, 0x01, 0x00, 0x00, (byte)(key + 1), 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -102,11 +102,13 @@ func writePage1(sd *hid.Device, key int, pixels []byte) {
 
 	_, err := sd.Write(data)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	return nil
 }
 
-func writePage2(sd *hid.Device, key int, pixels []byte) {
+func writePage2(sd *hid.Device, key int, pixels []byte) error {
 	header := []byte{
 		0x02, 0x01, 0x02, 0x00, 0x01, (byte)(key + 1),
 	}
@@ -122,8 +124,10 @@ func writePage2(sd *hid.Device, key int, pixels []byte) {
 
 	_, err := sd.Write(data)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	return nil
 }
 
 func readLoop(sd *hid.Device) {
@@ -132,7 +136,7 @@ func readLoop(sd *hid.Device) {
 		time.Sleep(1000)
 		size, err := sd.Read(data)
 		if err != nil {
-			log.Println(err)
+			log.Println("Failed to read from streamdeck: ", err)
 			continue
 		}
 
